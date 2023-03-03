@@ -1,0 +1,153 @@
+{
+    "element1": 
+    [
+        {
+            "pName": "weapon",
+            "pImg": "",
+            "pOrder": 0,
+            "pItems": [
+                {
+                    "itemName": "SMG",
+                    "itemImage": "",
+                    "itemIndex": 0,
+                    "namingNumber":0,
+                    "itemElements": [
+                        {
+                            "eName": "smg1",
+                            "eImg": "https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png",
+                            "ePrice": 23422,
+                            "edamage": 12341,
+                            "edesc": "dfgsdgs sdgdfg dg yutyherty  "
+                        }
+                    ]
+                },
+                {
+                    "itemName": "Sniper",
+                    "itemImage": "trer",
+                    "itemIndex": 1,
+                    "namingNumber":1,
+                    "itemElements": [
+                        {
+                            "eName": "Sniper1",
+                            "eImg": "https://w7.pngwing.com/pngs/805/738/png-transparent-zombie-download-with-transparent-background-fantasy-free-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs sdgdfg dgwy wwrty wrt fgh dfhwrht th g "
+                        },
+                        {
+                            "eName": "Sniper2",
+                            "eImg": "https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png",
+                            "ePrice": 23422,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs sdgdfg dgfsthg  "
+                        }
+                    ]
+                },
+                {
+                    "itemName": "LMG",
+                    "itemImage": "sdf",
+                    "itemIndex": 2,
+                    "namingNumber":2,
+                    "itemElements": [
+                        {
+                            "eName": "LMG1",
+                            "eImg": "https://w7.pngwing.com/pngs/980/472/png-transparent-marble-tile-stone-telephone-lightning-yellowish-marbling-free-s-texture-free-logo-design-template-orange-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgs hdrt gsdfg sdgs sdgdsfth ffg dg "
+                        },
+                        {
+                            "eName": "LMG2",
+                            "eImg": "https://w7.pngwing.com/pngs/805/738/png-transparent-zombie-download-with-transparent-background-fantasy-free-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs ssd rgsdf gd gsf gsf bsf sf gdgdfg dg "
+                        },
+                        {
+                            "eName": "LMG3",
+                            "eImg": "https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgsad gdrg sdfg sdfg dfgv dfbvg  sdgdfg dg "
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "pName": "not Weapon",
+            "pImg": "",
+            "pOrder": 1,
+            "pItems": [
+                {
+                    "itemName": "not SMG",
+                    "itemImage": "",
+                    "itemIndex": 0,
+                    "namingNumber":3,
+                    "itemElements": [
+                        {
+                            "eName": "not smg1",
+                            "eImg": "https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png",
+                            "ePrice": 23422,
+                            "edamage": 12341,
+                            "edesc": "dfgsdgs sdadrg fsdfgvsfgvsfdgv fdvsdfg fsg gdfg dg "
+                        }
+                    ]
+                },
+                {
+                    "itemName": "not Sniper",
+                    "itemImage": "trer",
+                    "itemIndex": 1,
+                    "namingNumber":4,
+                    "itemElements": [
+                        {
+                            "eName": "not Sniper1",
+                            "eImg": "https://w7.pngwing.com/pngs/805/738/png-transparent-zombie-download-with-transparent-background-fantasy-free-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs sdsdg sdfg dfgsdg sdgdfgdfgdfgdfffffffffffffffffffffffffffffffffffffgdfg dg "
+                        },
+                        {
+                            "eName": "not Sniper2",
+                            "eImg": "https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs sdgdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffg dg "
+                        }
+                    ]
+                },
+                {
+                    "itemName": "not LMG",
+                    "itemImage": "sdf",
+                    "itemIndex": 2,
+                    "namingNumber":5,
+                    "itemElements": [
+                        {
+                            "eName": "not LMG1",
+                            "eImg": "https://w7.pngwing.com/pngs/980/472/png-transparent-marble-tile-stone-telephone-lightning-yellowish-marbling-free-s-texture-free-logo-design-template-orange-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs sassssssssssssssssssaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasssssssssssssssssssssssssssssssssssssssssssssssssssssssssdgdfg dg "
+                        },
+                        {
+                            "eName": "not LMG2",
+                            "eImg": "https://w7.pngwing.com/pngs/805/738/png-transparent-zombie-download-with-transparent-background-fantasy-free-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs sdgdfsadgdfgdgsdgsdfg df adf sdfgsg dg "
+                        },
+                        {
+                            "eName": "not LMG3",
+                            "eImg": "https://w7.pngwing.com/pngs/895/199/png-transparent-spider-man-heroes-download-with-transparent-background-free-thumbnail.png",
+                            "ePrice": 345345,
+                            "edamage": 2342,
+                            "edesc": "dfgsdgs sdgdfg dg "
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+    
+    
+}
