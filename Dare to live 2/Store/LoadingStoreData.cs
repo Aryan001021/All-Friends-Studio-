@@ -6,10 +6,7 @@ using System.IO;
 using UnityEngine.Networking;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-//Create a delete directory function and try to replace jsons with 3 conditions
-//1. if only one use it .
-//2. if more 2 than use 2nd
-//3. if 3rd come along delete 1st make 2nd as 1st and and 3rd will be 2nd and load 3rd
+//new things will be added in itemdata/sidemenu/topMenu and filler methods in bottom of this script 
 public class LoadingStoreData : MonoBehaviour
 {
     [Header("JSON")]
@@ -60,7 +57,7 @@ public class LoadingStoreData : MonoBehaviour
     }
     public void StartTheLoading()
     {
-        if (PlayerPrefs.GetInt("fromLocal") == 1)
+        if (PlayerPrefs.GetInt("fromLocal") == 2)
         {
             //local datahere
             jsonData = localData;
@@ -73,9 +70,19 @@ public class LoadingStoreData : MonoBehaviour
             sceneManagerScript.StoreLoadScene();
 
         }
-        else if (PlayerPrefs.GetInt("fromLocal") == 2)
+        else if (PlayerPrefs.GetInt("fromLocal") == 1)
         {
-            jsonData = jsonDataOnline;
+            string[] jsonList = Directory.GetFiles(Path.Combine(Application.persistentDataPath + "/jsonFolder"), "*.json");
+            if (jsonList.Length == 1)
+            {
+                string path = (Application.persistentDataPath + "/jsonFolder/" + "/FirstJson.json");
+                jsonData = new TextAsset(File.ReadAllText(path));
+            }
+            else if (jsonList.Length == 2)
+            {
+                string path = (Application.persistentDataPath + "/jsonFolder/" + "/SecondJson.json");
+                jsonData = new TextAsset(File.ReadAllText(path));
+            }
             imagePath = "/store Image/";
             SpriteIndexAndImageHolderFiller();
             if (FileChecker())
@@ -87,6 +94,7 @@ public class LoadingStoreData : MonoBehaviour
 
             else
             {
+               // ImageDeletingFunction();
                 ImageDownloader();
             }
         }
@@ -103,7 +111,6 @@ public class LoadingStoreData : MonoBehaviour
         {
             File.Delete(images);
         }
-       
     }
     public List<List<Sprite>> GetSpritesForShop()
     {
