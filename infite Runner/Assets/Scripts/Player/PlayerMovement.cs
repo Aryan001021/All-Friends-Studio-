@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //CapsuleCollider2D playerCollider;
-    [SerializeField]int movementSpeed = 10;
-    [SerializeField] int movementPowerUpSpeed=20;
+    [SerializeField] int movementSpeed = 10;
+    [SerializeField] int movementPowerUpSpeed = 20;
     [SerializeField] int jumpSpeed = 20;
     [SerializeField] Color32 SpeedColor;
     [SerializeField] GameObject timerCanvas;
+    [SerializeField] CinemachineVirtualCameraBase followCamera;
+    [SerializeField] CinemachineVirtualCameraBase deathCamera;
     bool canMove = true;
-    bool uiMovementButtonPressed=false;
+    bool uiMovementButtonPressed = false;
     bool onGround = true;
     int jumpCount = 0;
     int defaultSpeed;
-    Vector3 playerNewSpawnPoint;
+    int CurrentLevel;
     static string idle = "idle";
     static string run = "run";
     static string jump = "jump";
@@ -24,16 +25,21 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D playerRigidBody;
     SpriteRenderer playerSpriteRenderer;
     Vector2 movementVector = new Vector2(0, 0);
+    Vector3 playerNewSpawnPoint;
+    LevelHandler levelHandler;
+    Gate gateScript;
     PlayerAnimationScript playerAnimationScript;
 
-    
+
     private void Awake()
     {
+        levelHandler=FindObjectOfType<LevelHandler> ();
+        CurrentLevel = levelHandler.GetCurrentLevel();
         defaultSpeed = movementSpeed;
         playerRigidBody = GetComponent<Rigidbody2D>();
-        playerAnimationScript=FindObjectOfType<PlayerAnimationScript>();
+        playerAnimationScript = FindObjectOfType<PlayerAnimationScript>();
         playerSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        playerNewSpawnPoint= transform.position;
+        playerNewSpawnPoint = transform.position;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -44,17 +50,20 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Obstacles"|| collision.gameObject.tag == "deathbed")
+        if (collision.gameObject.tag == "Obstacles" || collision.gameObject.tag == "deathbed")
         {
-            canMove= false;
+            canMove = false;
             playerRigidBody.Sleep();
+            followCamera.Priority = 0;
+            deathCamera.Priority = 1;
             playerAnimationScript.ChangeAnimation(death);
+
         }
         if (collision.gameObject.tag == "Platform")
         {
             onGround = true;
             jumpCount = 0;
-        }        
+        }
         if (collision.gameObject.tag == "Powerup")
         {
             string powerUpType = collision.gameObject.GetComponent<PowerUpHandler>().ReturnPowerUpType();
@@ -68,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
                     movementSpeed = movementPowerUpSpeed;
                     StartCoroutine(DecreaseSpeed());
                 }
-                else if (movementSpeed==movementPowerUpSpeed)
+                else if (movementSpeed == movementPowerUpSpeed)
                 {
                     StopCoroutine(DecreaseSpeed());
                     PowerUpTimer timer = timerCanvas.GetComponentInChildren<PowerUpTimer>();
@@ -83,10 +92,10 @@ public class PlayerMovement : MonoBehaviour
     }
     IEnumerator DecreaseSpeed()
     {
-        
-        
-        PowerUpTimer timer=timerCanvas.GetComponentInChildren<PowerUpTimer>();
-        while(timer.ReturnTimeLeft() >= 0)
+
+
+        PowerUpTimer timer = timerCanvas.GetComponentInChildren<PowerUpTimer>();
+        while (timer.ReturnTimeLeft() >= 0)
         {
 
             yield return new WaitForSeconds(1);
@@ -101,13 +110,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+
+    [System.Obsolete]
     private void Update()
     {
         if (canMove)
         {
             PlayerMovementFunc();
             AnimationFunc();
-            /* comment this whole line when using android*/ movementVector = new Vector2(0, 0);
+            /* comment this whole line when using android*/movementVector = new Vector2(0, 0);
 
         }
         if (!canMove)
@@ -116,18 +127,29 @@ public class PlayerMovement : MonoBehaviour
             {
                 PowerUpTimer timer = timerCanvas.GetComponentInChildren<PowerUpTimer>();
                 timer.Resettimer();
-                timerCanvas.active = false;
+                playerSpriteRenderer.color = Color.white;
+                movementSpeed = defaultSpeed;
+                timerCanvas.SetActive(false);
             }
-            playerSpriteRenderer.color= Color.white;
-            transform.position = playerNewSpawnPoint;
-            if (transform.position.x == playerNewSpawnPoint.x)
-            {
-                playerRigidBody.WakeUp();
-                canMove=true;
-            }
+            playerSpriteRenderer.color = Color.white;
+
+            StartCoroutine(Resurection());
+
         }
     }
+    IEnumerator Resurection()
+    {
+        yield return new WaitForSeconds(4);
 
+        transform.position = playerNewSpawnPoint;
+        playerRigidBody.WakeUp();
+        if (playerRigidBody.IsSleeping() == false)
+        {
+            deathCamera.Priority = 0;
+            followCamera.Priority = 1;
+            canMove = true;
+        }
+    }
     private void AnimationFunc()
     {
         if (onGround)
@@ -143,69 +165,69 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            
+
         }
     }
     //mobile Ui stuff bellow
-    public void LeftMovement() 
-    {
-        
-        if (transform.localScale.x == 1)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        uiMovementButtonPressed = true;
-        movementVector = new Vector2(-1, 0);
-    }
-    public void UIMovementButtonUp() 
-    {
-        playerRigidBody.velocity=new Vector2(0,playerRigidBody.velocity.y);
-        uiMovementButtonPressed = false;
-    }
-    public void RightMovement()
-    {
-        
-        if (transform.localScale.x == -1)
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        uiMovementButtonPressed = true;
+    //public void LeftMovement()
+    //{
 
-         movementVector = new Vector2(1, 0);
-    }
-    public void JumpButton()
-    {
-       onGround = false;
+    //    if (transform.localScale.x == 1)
+    //    {
+    //        transform.localScale = new Vector3(-1, 1, 1);
+    //    }
+    //    uiMovementButtonPressed = true;
+    //    movementVector = new Vector2(-1, 0);
+    //}
+    //public void UIMovementButtonUp()
+    //{
+    //    playerRigidBody.velocity = new Vector2(0, playerRigidBody.velocity.y);
+    //    uiMovementButtonPressed = false;
+    //}
+    //public void RightMovement()
+    //{
 
-        if (jumpCount < 2)
-        {
-            jumpCount++;
-            if (jumpCount == 0)
-            {
-                playerAnimationScript.ChangeAnimation(jump);
-                playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, (jumpSpeed / 2)));
-            }
-            else
-            {
+    //    if (transform.localScale.x == -1)
+    //    {
+    //        transform.localScale = new Vector3(1, 1, 1);
+    //    }
+    //    uiMovementButtonPressed = true;
 
-                playerAnimationScript.ChangeAnimation(jump);
-                playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, 0));
-                playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, jumpSpeed));
-            }
-        }
-    }
+    //    movementVector = new Vector2(1, 0);
+    //}
+    //public void JumpButton()
+    //{
+    //    onGround = false;
+
+    //    if (jumpCount < 2)
+    //    {
+    //        jumpCount++;
+    //        if (jumpCount == 0)
+    //        {
+    //            playerAnimationScript.ChangeAnimation(jump);
+    //            playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, (jumpSpeed / 2)));
+    //        }
+    //        else if (jumpCount == 1)
+    //        {
+
+    //            playerAnimationScript.ChangeAnimation(jump);
+    //            playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, 0));
+    //            playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, jumpSpeed));
+    //        }
+    //    }
+    //}
     //mobile ui stuff above
 
     void PlayerMovementFunc()
     {
         if (Input.GetKey(KeyCode.D))
         {
-            uiMovementButtonPressed=true;
+            uiMovementButtonPressed = true;
             if (transform.localScale.x == -1)
             {
-                transform.localScale = new Vector3(1, 1, 1); 
+                transform.localScale = new Vector3(1, 1, 1);
             }
-            
+
             movementVector = new Vector2(1, 0);
         }
         if (Input.GetKey(KeyCode.A))
@@ -217,31 +239,34 @@ public class PlayerMovement : MonoBehaviour
             }
             movementVector = new Vector2(-1, 0);
         }
-       
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             onGround = false;
-            
+
             if (jumpCount < 2)
             {
-                jumpCount++;
+               
                 if (jumpCount == 0)
                 {
+                    jumpCount++;
                     playerAnimationScript.ChangeAnimation(jump);
-                    playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, (jumpSpeed / 2)));
+                    playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, (jumpSpeed)));
                 }
-                else 
+                else if (jumpCount == 1 && CurrentLevel!=0)
                 {
-
+                    jumpCount++;
                     playerAnimationScript.ChangeAnimation(jump);
                     playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, 0));
                     playerRigidBody.velocity = (new Vector2(playerRigidBody.velocity.x, jumpSpeed ));
+                    
                 }
             }
         }
-        if (uiMovementButtonPressed)
-        {
-            playerRigidBody.velocity = new Vector2((movementVector.x * movementSpeed), playerRigidBody.velocity.y);
+            if (uiMovementButtonPressed)
+            {
+                playerRigidBody.velocity = new Vector2((movementVector.x * movementSpeed), playerRigidBody.velocity.y);
+            }
         }
-    }
+    
 }

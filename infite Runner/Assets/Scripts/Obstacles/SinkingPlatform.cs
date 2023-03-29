@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SinkingPlatform : MonoBehaviour
 {
-    bool isCollided = false;
     Rigidbody2D platformrigidBody;
     private void Awake()
     {

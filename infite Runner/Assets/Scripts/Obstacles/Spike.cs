@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
-    bool isEnter = false;
     [SerializeField] GameObject platform;
     private void OnTriggerEnter2D(Collider2D collision)
     {
